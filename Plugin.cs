@@ -286,6 +286,8 @@ namespace GorillaTagTwitchIntegration
 			Time.timeScale = normalDeltaTime;
 			GorillaLocomotion.Player.Instance.transform.localScale = new Vector3(1, 1, 1);
 			Time.fixedDeltaTime = normalFixedDeltaTime;
+			GorillaLocomotion.Player.Instance.maxJumpSpeed = normalMaxJump;
+			GorillaLocomotion.Player.Instance.jumpMultiplier = normalJumpMultiplier;
 
 			eventClass.TreeRoom.GetComponent<MeshRenderer>().enabled = true;
 			eventClass.Forest1.GetComponent<MeshRenderer>().enabled = true;

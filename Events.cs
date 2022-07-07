@@ -20,6 +20,8 @@ namespace GorillaTagTwitchIntegration
 		public GameObject City4;
 		public GameObject Mountain1;
 		public GameObject Mountain2;
+		public float Maxjump;
+		public float Jumpmulti;
 
 		Plugin plugin;
 		public static Events instance;
@@ -42,6 +44,11 @@ namespace GorillaTagTwitchIntegration
 			plugin.AddEvent("BigPlayer", BigPlayer);
 			plugin.AddEvent("ChangingGravity", ChangingGravity);
 			plugin.AddEvent("CorruptWorld", CorruptWorld);
+			plugin.AddEvent("ThickArms", ThickArms);
+			plugin.AddEvent("Move'nt", Movent);
+			plugin.AddEvent("SkipArmDay", SkipArmDay);
+			plugin.AddEvent("SmallPlayer", SmallPlayer);
+			plugin.AddEvent("SpeedBoost", SpeedBoost);
 
 			findObjects();
 		}
@@ -137,6 +144,13 @@ namespace GorillaTagTwitchIntegration
 			plugin.chat.text = "ChangingGravity";
 			StartCoroutine(ChangingGravityIE());
 		}
+		public void ThickArms()
+        {
+			plugin.chat.text = "ThickArms";
+			GameObject.Find("GorillaParent/GorillaVRRigs/Gorilla Player Networked(Clone)/rig/body/shoulder.L").transform.localScale = new Vector3(2, 2, 2);
+			GameObject.Find("GorillaParent/GorillaVRRigs/Gorilla Player Networked(Clone)/rig/body/shoulder.R").transform.localScale = new Vector3(2, 2, 2);
+			StartCoroutine(ResetArm());
+		}
 		public void CorruptWorld()
         {
 			plugin.chat.text = "CorruptWorld";
@@ -152,6 +166,38 @@ namespace GorillaTagTwitchIntegration
 			Mountain1.GetComponent<MeshRenderer>().enabled = false;
 			Mountain2.GetComponent<MeshRenderer>().enabled = false;
 			StartCoroutine(UnCorruptWorld());
+		}
+		public void Movent()
+        {
+			plugin.chat.text = "Move'nt";
+			GorillaLocomotion.Player.Instance.disableMovement = true;
+			StartCoroutine(EnableMovement());
+		}
+		public void SkipArmDay()
+        {
+			plugin.chat.text = "SkipArmDay";
+			GameObject.Find("GorillaParent/GorillaVRRigs/Gorilla Player Networked(Clone)/rig/body/shoulder.L").transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+			GameObject.Find("GorillaParent/GorillaVRRigs/Gorilla Player Networked(Clone)/rig/body/shoulder.R").transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+			StartCoroutine(ResetArm());
+		}
+		public void SmallPlayer()
+        {
+			plugin.chat.text = "SmallPlayer";
+			GorillaLocomotion.Player.Instance.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+			StartCoroutine(ResetPlayerSize());
+		}
+		public void SpeedBoost()
+        {
+			Maxjump = GorillaLocomotion.Player.Instance.maxJumpSpeed;
+			Jumpmulti = GorillaLocomotion.Player.Instance.jumpMultiplier;
+			GorillaLocomotion.Player.Instance.maxJumpSpeed = 999f;
+			GorillaLocomotion.Player.Instance.jumpMultiplier = 1.45f;
+		}
+		public IEnumerator ResetBoost()
+        {
+			yield return new WaitForSeconds(30);
+			GorillaLocomotion.Player.Instance.maxJumpSpeed = Maxjump;
+			GorillaLocomotion.Player.Instance.jumpMultiplier = Jumpmulti;
 		}
 		public IEnumerator UnCorruptWorld()
         {
@@ -238,7 +284,17 @@ namespace GorillaTagTwitchIntegration
 			yield return new WaitForSeconds(30);
 			GorillaLocomotion.Player.Instance.transform.localScale = new Vector3(1, 1, 1);
 		}
-
+		public IEnumerator ResetArm()
+        {
+			yield return new WaitForSeconds(30);
+			GameObject.Find("GorillaParent/GorillaVRRigs/Gorilla Player Networked(Clone)/rig/body/shoulder.L").transform.localScale = new Vector3(1, 1, 1);
+			GameObject.Find("GorillaParent/GorillaVRRigs/Gorilla Player Networked(Clone)/rig/body/shoulder.R").transform.localScale = new Vector3(1, 1, 1);
+		}
+		public IEnumerator EnableMovement()
+        {
+			yield return new WaitForSeconds(10);
+			GorillaLocomotion.Player.Instance.disableMovement = false;
+		}
 		public void stopAllIE()
         {
 			StopAllCoroutines();
