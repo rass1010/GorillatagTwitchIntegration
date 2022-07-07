@@ -1,7 +1,7 @@
 # GorillatagTwitchIntegration
 Adds Twitch Integration To Gorilla Tag
 
-Currently there is only 13 events
+Currently there is only 18 events
 but i will be adding more
 
 if you have an event that you want to be added then dm me rass1010#8743
